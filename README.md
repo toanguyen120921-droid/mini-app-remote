@@ -47,3 +47,4 @@ exposes: {
 3. Restart bundler
 4. Import từ Host App
 # mini-app-remote
+# mini-app-remote
