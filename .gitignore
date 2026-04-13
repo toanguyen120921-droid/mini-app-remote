@@ -80,3 +80,20 @@ yarn-error.log
 # Ignored CDN Output
 cdn-dist/
 
+# node
+node_modules/
+
+# iOS
+ios/Pods/
+ios/build/
+ios/.xcode.env
+ios/.xcode.env.local
+
+# Android
+android/.gradle/
+android/app/build/
+android/build/
+
+# misc
+.DS_Store
+*.log
