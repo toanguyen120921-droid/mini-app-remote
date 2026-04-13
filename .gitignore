@@ -1,0 +1,9 @@
+# Keep only source code in this repo
+*
+
+# Allow gitignore itself
+!.gitignore
+
+# Allow source folder
+!src/
+!src/**
