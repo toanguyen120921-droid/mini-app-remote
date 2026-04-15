@@ -9,7 +9,7 @@ export interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({
-  title = 'Click Me',
+  title = 'Play Trailer',
   onPress,
   disabled = false,
   variant = 'primary',
@@ -26,9 +26,9 @@ const Button: React.FC<ButtonProps> = ({
       activeOpacity={0.7}>
       <View style={styles.content}>
         <Text style={[styles.text, variant === 'secondary' && styles.textSecondary]}>
-          🚀 {title}
+          🎬 {title}
         </Text>
-        <Text style={styles.subtitle}>From Remote App</Text>
+        <Text style={styles.subtitle}>From Movies App</Text>
       </View>
     </TouchableOpacity>
   );
@@ -36,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#e91e63',
+    backgroundColor: '#c1121f',
     padding: 16,
     borderRadius: 8,
     marginVertical: 8,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   buttonSecondary: {
-    backgroundColor: '#9c27b0',
+    backgroundColor: '#1d3557',
   },
   buttonDisabled: {
     backgroundColor: '#ccc',

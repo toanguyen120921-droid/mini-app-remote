@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>RemoteApp</string>
+	<string>MoviesApp</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -41,7 +41,7 @@
 		<true/>
 	</dict>
 	<key>RCTScriptURLString</key>
-	<string>http://localhost:9001/index.bundle?platform=ios</string>
+	<string>http://localhost:9004/index.bundle?platform=ios</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

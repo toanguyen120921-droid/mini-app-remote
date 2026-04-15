@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Custom hook to sync state with Remote App
+ * Custom hook to sync state with Movies App
  * Can be used to share state between Host and Remote
  */
 

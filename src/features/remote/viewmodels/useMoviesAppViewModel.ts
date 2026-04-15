@@ -5,15 +5,15 @@ import {
   REMOTE_CONTENT,
 } from '../models/remoteApp.model';
 
-interface UseRemoteAppViewModelParams {
+interface UseMoviesAppViewModelParams {
   onLoadComplete?: () => void;
   onRequestUpdate?: () => void;
 }
 
-export const useRemoteAppViewModel = ({
+export const useMoviesAppViewModel = ({
   onLoadComplete,
   onRequestUpdate,
-}: UseRemoteAppViewModelParams) => {
+}: UseMoviesAppViewModelParams) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
@@ -36,4 +36,3 @@ export const useRemoteAppViewModel = ({
     handleRequestUpdate,
   };
 };
-

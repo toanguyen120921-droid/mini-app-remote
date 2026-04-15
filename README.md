@@ -1,4 +1,4 @@
-# Remote App
+# Movies App
 
 React Native app với Re.Pack và Module Federation.
 
@@ -18,7 +18,7 @@ App này là **REMOTE** trong kiến trúc Module Federation:
 
 ```bash
 # Development
-yarn start              # Start Metro bundler (port 9001)
+yarn start              # Start Re.Pack dev server (port 9004)
 yarn android           # Run on Android
 yarn ios               # Run on iOS
 

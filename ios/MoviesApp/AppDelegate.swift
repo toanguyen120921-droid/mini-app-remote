@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
 
     factory.startReactNative(
-      withModuleName: "RemoteApp",
+      withModuleName: "MoviesApp",
       in: window,
       launchOptions: launchOptions
     )
@@ -40,8 +40,8 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
 
   override func bundleURL() -> URL? {
 #if DEBUG
-    // Re.Pack dev server for Remote App runs on port 9001
-    return URL(string: "http://localhost:9001/index.bundle?platform=ios")
+    // Re.Pack dev server for Movies App runs on port 9004
+    return URL(string: "http://localhost:9004/index.bundle?platform=ios")
 #else
     return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
 #endif
