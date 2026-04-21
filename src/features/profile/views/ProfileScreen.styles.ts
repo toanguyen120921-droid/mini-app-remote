@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {PROFILE_THEME} from '../models/profile.model';
 
 export const styles = StyleSheet.create({
@@ -7,11 +7,14 @@ export const styles = StyleSheet.create({
     backgroundColor: PROFILE_THEME.background,
   },
   content: {
-    padding: 16,
-    paddingBottom: 110, 
+    paddingBottom: 110,
   },
+
+  // ─── Header ──────────────────────────────────────────────────────────────────
   header: {
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    paddingTop: Platform.OS === 'ios' ? 60 : 20,
+    paddingBottom: 8,
   },
   eyebrow: {
     color: PROFILE_THEME.accent,
@@ -32,12 +35,16 @@ export const styles = StyleSheet.create({
     lineHeight: 20,
     marginTop: 6,
   },
+
+  // ─── Profile Card ────────────────────────────────────────────────────────────
   card: {
     backgroundColor: PROFILE_THEME.card,
     borderRadius: 24,
     borderWidth: 1,
     borderColor: PROFILE_THEME.border,
-    padding: 18,
+    padding: 20,
+    marginHorizontal: 20,
+    marginTop: 20,
   },
   profileRow: {
     flexDirection: 'row',
@@ -56,6 +63,8 @@ export const styles = StyleSheet.create({
     backgroundColor: PROFILE_THEME.surface,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: PROFILE_THEME.border,
   },
   avatarFallbackText: {
     color: PROFILE_THEME.text,
@@ -79,22 +88,108 @@ export const styles = StyleSheet.create({
   metaRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 12,
+    marginTop: 14,
+    gap: 8,
   },
   metaPill: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
     borderRadius: 999,
     backgroundColor: PROFILE_THEME.surface,
-    marginRight: 8,
-    marginBottom: 8,
   },
   metaText: {
     color: PROFILE_THEME.textSecondary,
     fontSize: 12,
     fontWeight: '600',
   },
+
+  // ─── Stats Row ───────────────────────────────────────────────────────────────
+  statsRow: {
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    marginTop: 16,
+    gap: 12,
+  },
+  statCard: {
+    flex: 1,
+    backgroundColor: PROFILE_THEME.card,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: PROFILE_THEME.border,
+    padding: 18,
+    alignItems: 'center',
+  },
+  statEmoji: {
+    fontSize: 24,
+    marginBottom: 8,
+  },
+  statValue: {
+    color: PROFILE_THEME.text,
+    fontSize: 22,
+    fontWeight: '800',
+    marginBottom: 4,
+  },
+  statLabel: {
+    color: PROFILE_THEME.textMuted,
+    fontSize: 12,
+    fontWeight: '600',
+  },
+
+  // ─── Menu Section ────────────────────────────────────────────────────────────
+  menuSection: {
+    marginHorizontal: 20,
+    marginTop: 24,
+  },
+  menuSectionTitle: {
+    color: PROFILE_THEME.text,
+    fontSize: 16,
+    fontWeight: '800',
+    marginBottom: 12,
+    paddingHorizontal: 4,
+  },
+  menuCard: {
+    backgroundColor: PROFILE_THEME.card,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: PROFILE_THEME.border,
+    overflow: 'hidden',
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+  },
+  menuItemBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: PROFILE_THEME.border,
+  },
+  menuItemEmoji: {
+    fontSize: 18,
+    marginRight: 14,
+    width: 24,
+    textAlign: 'center',
+  },
+  menuItemText: {
+    flex: 1,
+    color: PROFILE_THEME.text,
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  menuItemChevron: {
+    color: PROFILE_THEME.textMuted,
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  menuItemValueText: {
+    color: PROFILE_THEME.textMuted,
+    fontSize: 13,
+    marginRight: 8,
+  },
+
+  // ─── Action Button ───────────────────────────────────────────────────────────
   button: {
+    marginHorizontal: 20,
     marginTop: 18,
     borderRadius: 16,
     backgroundColor: PROFILE_THEME.primary,
@@ -109,25 +204,34 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '800',
   },
+
+  // ─── Empty / Error ───────────────────────────────────────────────────────────
   emptyBox: {
     borderRadius: 18,
     borderWidth: 1,
     borderColor: PROFILE_THEME.border,
     backgroundColor: PROFILE_THEME.surface,
-    padding: 16,
+    padding: 20,
+    alignItems: 'center',
+  },
+  emptyEmoji: {
+    fontSize: 40,
+    marginBottom: 12,
   },
   emptyTitle: {
     color: PROFILE_THEME.text,
     fontSize: 16,
     fontWeight: '800',
+    marginBottom: 6,
   },
   emptyText: {
     color: PROFILE_THEME.textSecondary,
     fontSize: 13,
     lineHeight: 20,
-    marginTop: 6,
+    textAlign: 'center',
   },
   errorBox: {
+    marginHorizontal: 20,
     marginTop: 14,
     borderRadius: 16,
     padding: 14,
@@ -140,21 +244,21 @@ export const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
   },
-  rawBox: {
-    marginTop: 16,
-    borderRadius: 16,
-    padding: 14,
-    backgroundColor: '#0D1320',
+
+  // ─── App Info ────────────────────────────────────────────────────────────────
+  appInfo: {
+    alignItems: 'center',
+    marginTop: 28,
+    paddingBottom: 20,
   },
-  rawTitle: {
-    color: PROFILE_THEME.text,
-    fontSize: 13,
-    fontWeight: '800',
-    marginBottom: 8,
-  },
-  rawText: {
+  appInfoText: {
     color: PROFILE_THEME.textMuted,
     fontSize: 12,
-    lineHeight: 18,
+    fontWeight: '500',
+  },
+  appInfoVersion: {
+    color: PROFILE_THEME.textMuted,
+    fontSize: 11,
+    marginTop: 4,
   },
 });

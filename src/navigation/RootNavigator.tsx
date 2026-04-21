@@ -23,12 +23,7 @@ export default function RootNavigator(props: AppProps) {
       <Stack.Screen
         name="MovieDetail"
         component={MovieDetailScreen}
-        options={{
-          headerShown: true,
-          title: "Chi Tiết Phim",
-          headerStyle: {backgroundColor: "#090D14"},
-          headerTintColor: "#FFF",
-        }}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="VideoPlayer"

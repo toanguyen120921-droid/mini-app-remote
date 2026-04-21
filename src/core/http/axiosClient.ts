@@ -1,14 +1,21 @@
 import axios, {AxiosError, AxiosInstance} from 'axios';
-
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+import {TMDB_CONFIG} from '../tmdb.config';
 
 export const tmdbAxiosClient: AxiosInstance = axios.create({
-  baseURL: TMDB_BASE_URL,
+  baseURL: TMDB_CONFIG.baseUrl,
   headers: {
     accept: 'application/json',
     'Content-Type': 'application/json',
   },
   timeout: 15_000,
+});
+
+// Inject Bearer token when available
+tmdbAxiosClient.interceptors.request.use(config => {
+  if (TMDB_CONFIG.bearerToken) {
+    config.headers.Authorization = `Bearer ${TMDB_CONFIG.bearerToken}`;
+  }
+  return config;
 });
 
 tmdbAxiosClient.interceptors.response.use(

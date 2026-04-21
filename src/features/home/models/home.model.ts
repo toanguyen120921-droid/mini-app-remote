@@ -1,7 +1,15 @@
 export type HomeSectionKey = 'popular' | 'latest';
 
+export interface CastMember {
+  id: string;
+  name: string;
+  character: string;
+  profileUrl?: string;
+}
+
 export interface Movie {
   id: string;
+  tmdbId?: number;
   title: string;
   year: string;
   genre: string[];
@@ -12,6 +20,8 @@ export interface Movie {
   synopsis: string;
   posterUrl: string;
   backdropUrl: string;
+  trailerUrl?: string;
+  cast?: CastMember[];
   isFeatured?: boolean;
 }
 

@@ -1,7 +1,8 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {
   FlatList,
   Image,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -152,6 +153,15 @@ export default function HomeScreen({
     </>
   );
 
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setIsRefreshing(true);
+    // Simulate refresh — when TMDB API is integrated, this triggers re-fetch
+    handleRefreshPress();
+    setTimeout(() => setIsRefreshing(false), 800);
+  }, [handleRefreshPress]);
+
   return (
     <View style={styles.container}>
       <StatusBar
@@ -165,6 +175,15 @@ export default function HomeScreen({
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={onRefresh}
+            tintColor="#E63B45"
+            colors={['#E63B45']}
+            progressBackgroundColor="#121826"
+          />
+        }
       />
     </View>
   );

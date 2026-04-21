@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useRef} from "react";
+import React, {useState, useCallback, useRef, useEffect} from "react";
 import {
   View,
   Text,
@@ -31,8 +31,21 @@ export default function VideoPlayerScreen() {
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showControls, setShowControls] = useState(true);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  console.log(12312312321);
+  // Auto-hide controls after 3 seconds
+  useEffect(() => {
+    if (showControls && isPlaying) {
+      hideTimerRef.current = setTimeout(() => {
+        setShowControls(false);
+      }, 3000);
+    }
+    return () => {
+      if (hideTimerRef.current) {
+        clearTimeout(hideTimerRef.current);
+      }
+    };
+  }, [showControls, isPlaying]);
 
   const player = useVideoPlayer(VIDEO_URL, (_player) => {
     _player.loop = false;
@@ -47,18 +60,10 @@ export default function VideoPlayerScreen() {
     player,
     "onProgress",
     useCallback((data) => {
-      console.log(data, "onProgress");
       setCurrentTime(data.currentTime);
     }, []),
   );
 
-  useEvent(
-    player,
-    "onLoad",
-    useCallback((data) => {
-      console.log(data, "onLoad");
-    }, []),
-  );
   // Get duration when video loads
   useEvent(
     player,
