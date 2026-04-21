@@ -49,3 +49,4 @@ exposes: {
 # mini-app-remote
 # mini-app-remote
 # mini-app-remote
+# mini-app-movies
