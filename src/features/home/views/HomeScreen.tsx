@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from "react";
 import {
   FlatList,
   Image,
@@ -8,19 +8,15 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
+} from "react-native";
 import ContentCarousel, {
   ContentCarouselItem,
-} from '../../../components/ContentCarousel';
-import {HomeScreenProps} from '../home.types';
-import {
-  HOME_COPY,
-  HOME_THEME,
-  HomeSection,
-  Movie,
-} from '../models/home.model';
-import {useHomeViewModel} from '../viewmodels/useHomeViewModel';
-import {styles} from './HomeScreen.styles';
+} from "../../../components/ContentCarousel";
+import {HomeScreenProps} from "../home.types";
+import {HOME_COPY, HOME_THEME, HomeSection, Movie} from "../models/home.model";
+import {useHomeViewModel} from "../viewmodels/useHomeViewModel";
+import {styles} from "./HomeScreen.styles";
+import MovieCard from "./MovieCard";
 
 export default function HomeScreen({
   onLoadComplete,
@@ -46,7 +42,7 @@ export default function HomeScreen({
   });
 
   const featuredCarouselItems: ContentCarouselItem<Movie>[] =
-    featuredMovies.map(movie => ({
+    featuredMovies.map((movie) => ({
       id: movie.id,
       imageUrl: movie.backdropUrl,
       title: movie.title,
@@ -57,34 +53,11 @@ export default function HomeScreen({
       payload: movie,
     }));
 
-  const renderMovieCard = ({item}: {item: Movie}) => (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      style={styles.movieCard}
-      onPress={() => handleMoviePress(item)}>
-      <Image
-        source={{uri: item.posterUrl}}
-        style={styles.moviePoster}
-        resizeMode="cover"
-      />
-      <View style={styles.playButtonOverlay}>
-        <View style={styles.playButton}>
-          <View style={styles.playTriangle} />
-        </View>
-      </View>
-      <View style={styles.movieInfo}>
-        <Text numberOfLines={1} style={styles.movieTitle}>
-          {item.title}
-        </Text>
-        <Text numberOfLines={1} style={styles.movieGenre}>
-          {item.genre[0]}
-        </Text>
-        <View style={styles.movieMetaRow}>
-          <Text style={styles.movieMetaText}>{item.year}</Text>
-          <Text style={styles.movieRatingText}>IMDb {item.rating.toFixed(1)}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
+  const renderMovieCard = useCallback(
+    ({item}: {item: Movie}) => (
+      <MovieCard movie={item} onPress={handleMoviePress} />
+    ),
+    [handleMoviePress],
   );
 
   const renderSection = ({item}: {item: HomeSection}) => (
@@ -94,9 +67,10 @@ export default function HomeScreen({
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.seeAllButton}
-          onPress={() => handleSeeAllPress(item)}>
+          onPress={() => handleSeeAllPress(item)}
+        >
           <Text style={styles.seeAllText}>{HOME_COPY.seeAllLabel}</Text>
-          <Text style={styles.chevronIconText}>{'>'}</Text>
+          <Text style={styles.chevronIconText}>{">"}</Text>
         </TouchableOpacity>
       </View>
 
@@ -104,7 +78,7 @@ export default function HomeScreen({
         <FlatList
           horizontal
           data={item.movies}
-          keyExtractor={movie => movie.id}
+          keyExtractor={(movie) => movie.id}
           renderItem={renderMovieCard}
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.moviesListContent}
@@ -130,7 +104,8 @@ export default function HomeScreen({
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.reloadButton}
-            onPress={handleRefreshPress}>
+            onPress={handleRefreshPress}
+          >
             <Text style={styles.reloadButtonText}>{HOME_COPY.reloadLabel}</Text>
           </TouchableOpacity>
         ) : null}
@@ -139,7 +114,7 @@ export default function HomeScreen({
       <ContentCarousel
         items={featuredCarouselItems}
         style={styles.carouselSection}
-        onItemPress={item => {
+        onItemPress={(item) => {
           if (item.payload) {
             handleMoviePress(item.payload);
           }
@@ -150,8 +125,9 @@ export default function HomeScreen({
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriesContent}>
-          {categories.map(category => (
+          contentContainerStyle={styles.categoriesContent}
+        >
+          {categories.map((category) => (
             <TouchableOpacity
               key={category}
               activeOpacity={0.85}
@@ -159,12 +135,14 @@ export default function HomeScreen({
                 styles.categoryPill,
                 activeCategory === category && styles.categoryPillActive,
               ]}
-              onPress={() => handleCategoryChange(category)}>
+              onPress={() => handleCategoryChange(category)}
+            >
               <Text
                 style={[
                   styles.categoryText,
                   activeCategory === category && styles.categoryTextActive,
-                ]}>
+                ]}
+              >
                 {category}
               </Text>
             </TouchableOpacity>
@@ -182,7 +160,7 @@ export default function HomeScreen({
       />
       <FlatList
         data={sections}
-        keyExtractor={section => section.key}
+        keyExtractor={(section) => section.key}
         renderItem={renderSection}
         ListHeaderComponent={renderHeader}
         contentContainerStyle={styles.listContent}

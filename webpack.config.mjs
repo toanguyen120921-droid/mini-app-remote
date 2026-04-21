@@ -9,6 +9,12 @@ const HOST_OWNED_NATIVE_MODULES = {
   "react-native-linear-gradient": "2.8.3",
   "react-navigation/bottom-tabs": "7.15.9",
   "react-navigation/compat": "5.3.20",
+  "react-native-gesture-handler": "2.31.1",
+  "react-native-reanimated": "4.3.0",
+  "react-native-screens": "4.24.0",
+  "react-native-video": "7.0.0-beta.9",
+  "react-native-worklets": "0.5.3",
+  "react-native-nitro-modules": "0.35.4",
 };
 
 const createNativeSharedConfig = () =>
@@ -16,7 +22,7 @@ const createNativeSharedConfig = () =>
     Object.entries(HOST_OWNED_NATIVE_MODULES).map(([name, version]) => [
       name,
       {
-        singleton: true,
+        singleton: false,
         eager: true,
         requiredVersion: version,
       },
@@ -100,7 +106,7 @@ export default (env) => {
         // doesn't exist"). Force webpack to treat them as plain CommonJS.
         {
           test: /\.cjs$/,
-          type: 'javascript/auto',
+          type: "javascript/auto",
         },
         // ── Fix 1: ESM strict resolution ────────────────────────────────────────
         // @react-navigation/* and other ESM packages import without file
@@ -129,10 +135,10 @@ export default (env) => {
         {
           test: /\.[jt]sx?$/,
           exclude: /node_modules/,
-        use: {
+          use: {
             loader: "babel-loader",
             options: {
-              plugins: ['@babel/plugin-transform-async-generator-functions'],
+              plugins: ["@babel/plugin-transform-async-generator-functions"],
             },
           },
         },
@@ -161,6 +167,11 @@ export default (env) => {
         shared: {
           react: {singleton: true, eager: true, requiredVersion: "19.2.3"},
           "react-native": {
+            singleton: true,
+            eager: true,
+            requiredVersion: "0.85.0",
+          },
+          "react-native/": {
             singleton: true,
             eager: true,
             requiredVersion: "0.85.0",
