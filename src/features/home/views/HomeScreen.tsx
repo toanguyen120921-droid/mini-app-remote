@@ -1,9 +1,8 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useState, useRef} from "react";
 import {
   FlatList,
   Image,
   RefreshControl,
-  SafeAreaView,
   ScrollView,
   StatusBar,
   Text,
@@ -61,24 +60,25 @@ export default function HomeScreen({
     [handleMoviePress],
   );
 
-  const renderSection = ({item}: {item: HomeSection}) => (
-    <View style={styles.section}>
+  const renderSection = (section: HomeSection) => (
+    <View key={section.key} style={styles.section}>
       <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>{item.title}</Text>
+        <Text style={styles.sectionTitle}>{section.title}</Text>
         <TouchableOpacity
           activeOpacity={0.7}
           style={styles.seeAllButton}
-          onPress={() => handleSeeAllPress(item)}
+          onPress={() => handleSeeAllPress(section)}
         >
           <Text style={styles.seeAllText}>{HOME_COPY.seeAllLabel}</Text>
           <Text style={styles.chevronIconText}>{">"}</Text>
         </TouchableOpacity>
       </View>
 
-      {item.movies.length > 0 ? (
+      {section.movies.length > 0 ? (
         <FlatList
+          key={`${section.key}-${activeCategory}`}
           horizontal
-          data={item.movies}
+          data={section.movies}
           keyExtractor={(movie) => movie.id}
           renderItem={renderMovieCard}
           showsHorizontalScrollIndicator={false}
@@ -87,77 +87,16 @@ export default function HomeScreen({
       ) : (
         <View style={styles.emptyState}>
           <Text style={styles.emptyStateTitle}>Nothing here yet</Text>
-          <Text style={styles.emptyStateText}>{item.emptyMessage}</Text>
+          <Text style={styles.emptyStateText}>{section.emptyMessage}</Text>
         </View>
       )}
     </View>
-  );
-
-  const renderHeader = () => (
-    <>
-      <View style={styles.topBar}>
-        <View>
-          <Text style={styles.eyebrow}>{HOME_COPY.eyebrow}</Text>
-          <Text style={styles.screenTitle}>{HOME_COPY.title}</Text>
-          <Text style={styles.screenSubtitle}>{HOME_COPY.subtitle}</Text>
-        </View>
-        {showReloadAction ? (
-          <TouchableOpacity
-            activeOpacity={0.8}
-            style={styles.reloadButton}
-            onPress={handleRefreshPress}
-          >
-            <Text style={styles.reloadButtonText}>{HOME_COPY.reloadLabel}</Text>
-          </TouchableOpacity>
-        ) : null}
-      </View>
-
-      <ContentCarousel
-        items={featuredCarouselItems}
-        style={styles.carouselSection}
-        onItemPress={(item) => {
-          if (item.payload) {
-            handleMoviePress(item.payload);
-          }
-        }}
-      />
-
-      <View style={styles.categoriesSection}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categoriesContent}
-        >
-          {categories.map((category) => (
-            <TouchableOpacity
-              key={category}
-              activeOpacity={0.85}
-              style={[
-                styles.categoryPill,
-                activeCategory === category && styles.categoryPillActive,
-              ]}
-              onPress={() => handleCategoryChange(category)}
-            >
-              <Text
-                style={[
-                  styles.categoryText,
-                  activeCategory === category && styles.categoryTextActive,
-                ]}
-              >
-                {category}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    </>
   );
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-    // Simulate refresh — when TMDB API is integrated, this triggers re-fetch
     handleRefreshPress();
     setTimeout(() => setIsRefreshing(false), 800);
   }, [handleRefreshPress]);
@@ -168,13 +107,9 @@ export default function HomeScreen({
         barStyle="light-content"
         backgroundColor={HOME_THEME.background}
       />
-      <FlatList
-        data={sections}
-        keyExtractor={(section) => section.key}
-        renderItem={renderSection}
-        ListHeaderComponent={renderHeader}
-        contentContainerStyle={styles.listContent}
+      <ScrollView
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.listContent}
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}
@@ -184,7 +119,69 @@ export default function HomeScreen({
             progressBackgroundColor="#121826"
           />
         }
-      />
+      >
+        {/* ─── Header ─────────────────────────────────────────────── */}
+        <View style={styles.topBar}>
+          <View>
+            <Text style={styles.eyebrow}>{HOME_COPY.eyebrow}</Text>
+            <Text style={styles.screenTitle}>{HOME_COPY.title}</Text>
+            <Text style={styles.screenSubtitle}>{HOME_COPY.subtitle}</Text>
+          </View>
+          {showReloadAction ? (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.reloadButton}
+              onPress={handleRefreshPress}
+            >
+              <Text style={styles.reloadButtonText}>{HOME_COPY.reloadLabel}</Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
+
+        {/* ─── Featured Carousel ──────────────────────────────────── */}
+        <ContentCarousel
+          items={featuredCarouselItems}
+          style={styles.carouselSection}
+          onItemPress={(item) => {
+            if (item.payload) {
+              handleMoviePress(item.payload);
+            }
+          }}
+        />
+
+        {/* ─── Categories ─────────────────────────────────────────── */}
+        <View style={styles.categoriesSection}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.categoriesContent}
+          >
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category}
+                activeOpacity={0.85}
+                style={[
+                  styles.categoryPill,
+                  activeCategory === category && styles.categoryPillActive,
+                ]}
+                onPress={() => handleCategoryChange(category)}
+              >
+                <Text
+                  style={[
+                    styles.categoryText,
+                    activeCategory === category && styles.categoryTextActive,
+                  ]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* ─── Sections ───────────────────────────────────────────── */}
+        {sections.map(renderSection)}
+      </ScrollView>
     </View>
   );
 }

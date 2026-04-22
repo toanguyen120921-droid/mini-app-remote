@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {useRoute, useNavigation, RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
@@ -96,11 +95,7 @@ export default function MovieDetailScreen() {
             style={styles.heroImage}
             resizeMode="cover"
           />
-          <LinearGradient
-            colors={['transparent', 'rgba(9, 13, 20, 0.7)', '#090D14']}
-            locations={[0, 0.6, 1]}
-            style={styles.heroGradient}
-          />
+          <View style={[styles.heroGradient, {backgroundColor: 'rgba(9, 13, 20, 0.85)'}]} />
 
           {/* Back button */}
           <View style={styles.backButtonContainer}>

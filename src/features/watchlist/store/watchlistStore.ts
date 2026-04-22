@@ -1,8 +1,25 @@
-import {create} from 'zustand';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import type {Movie} from '../../home/models/home.model';
+import {create} from "zustand";
+import {createMMKV} from "react-native-mmkv";
+import type {Movie} from "../../home/models/home.model";
 
-const WATCHLIST_STORAGE_KEY = '@movies_app/watchlist';
+const storage = createMMKV({id: "movies-app-watchlist"});
+const WATCHLIST_KEY = "watchlist";
+
+const persistWatchlist = (movies: Movie[]) => {
+  storage.set(WATCHLIST_KEY, JSON.stringify(movies));
+};
+
+const loadWatchlist = (): Movie[] => {
+  const raw = storage.getString(WATCHLIST_KEY);
+  if (raw) {
+    try {
+      return JSON.parse(raw) as Movie[];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+};
 
 interface WatchlistState {
   movies: Movie[];
@@ -13,19 +30,13 @@ interface WatchlistState {
   loadFromStorage: () => Promise<void>;
 }
 
-const persistWatchlist = (movies: Movie[]) => {
-  AsyncStorage.setItem(WATCHLIST_STORAGE_KEY, JSON.stringify(movies)).catch(
-    () => {},
-  );
-};
-
 export const useWatchlistStore = create<WatchlistState>((set, get) => ({
-  movies: [],
-  isLoaded: false,
+  movies: loadWatchlist(),
+  isLoaded: true,
 
   addMovie: (movie: Movie) => {
     const current = get().movies;
-    if (current.some(m => m.id === movie.id)) {
+    if (current.some((m) => m.id === movie.id)) {
       return;
     }
     const updated = [movie, ...current];
@@ -34,26 +45,17 @@ export const useWatchlistStore = create<WatchlistState>((set, get) => ({
   },
 
   removeMovie: (movieId: string) => {
-    const updated = get().movies.filter(m => m.id !== movieId);
+    const updated = get().movies.filter((m) => m.id !== movieId);
     set({movies: updated});
     persistWatchlist(updated);
   },
 
   isInWatchlist: (movieId: string) => {
-    return get().movies.some(m => m.id === movieId);
+    return get().movies.some((m) => m.id === movieId);
   },
 
   loadFromStorage: async () => {
-    try {
-      const raw = await AsyncStorage.getItem(WATCHLIST_STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as Movie[];
-        set({movies: parsed, isLoaded: true});
-      } else {
-        set({isLoaded: true});
-      }
-    } catch {
-      set({isLoaded: true});
-    }
+    const movies = loadWatchlist();
+    set({movies, isLoaded: true});
   },
 }));

@@ -108,6 +108,14 @@ export default (env) => {
           test: /\.cjs$/,
           type: "javascript/auto",
         },
+        // ── Fix 0b: type:module packages with mixed CJS/ESM ─────────────────────
+        // @tanstack/react-query has "type":"module" but its .cjs entry
+        // and internal .js files may use CJS patterns. Force javascript/auto.
+        {
+          test: /\.[jt]sx?$/,
+          include: /node_modules[\\/]@tanstack/,
+          type: "javascript/auto",
+        },
         // ── Fix 1: ESM strict resolution ────────────────────────────────────────
         // @react-navigation/* and other ESM packages import without file
         // extensions (e.g. 'react/jsx-runtime', 'nanoid/non-secure').
@@ -128,9 +136,15 @@ export default (env) => {
             /node_modules(.*[/\\])+@react-native/,
             /node_modules(.*[/\\])+@callstack\/repack/,
             /node_modules(.*[/\\])+@tanstack/,
+            /node_modules(.*[/\\])+react-native-mmkv/,
             /node_modules(.*[/\\])+zustand/,
           ],
-          use: "babel-loader",
+          use: {
+            loader: "babel-loader",
+            options: {
+              plugins: ["@babel/plugin-transform-async-generator-functions"],
+            },
+          },
         },
         {
           test: /\.[jt]sx?$/,

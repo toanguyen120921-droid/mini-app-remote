@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   ActivityIndicator,
   Image,
@@ -7,12 +7,12 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {PROFILE_COPY, PROFILE_THEME} from '../models/profile.model';
-import {ProfileScreenProps} from '../models/profile.types';
-import {useProfileViewModel} from '../viewmodels/useProfileViewModel';
-import {useWatchlistStore} from '../../watchlist/store/watchlistStore';
-import {styles} from './ProfileScreen.styles';
+} from "react-native";
+import {PROFILE_COPY, PROFILE_THEME} from "../models/profile.model";
+import {ProfileScreenProps} from "../models/profile.types";
+import {useProfileViewModel} from "../viewmodels/useProfileViewModel";
+import {useWatchlistStore} from "../../watchlist/store/watchlistStore";
+import {styles} from "./ProfileScreen.styles";
 
 export default function ProfileScreen(
   props: ProfileScreenProps,
@@ -26,9 +26,9 @@ export default function ProfileScreen(
     loadAccountDetail,
   } = useProfileViewModel(props);
 
-  const watchlistCount = useWatchlistStore(s => s.movies.length);
+  const watchlistCount = useWatchlistStore((s) => s.movies.length);
 
-  const displayName = account?.name || account?.username || 'TMDB User';
+  const displayName = account?.name || account?.username || "TMDB User";
   const avatarInitial = displayName.charAt(0).toUpperCase();
 
   return (
@@ -39,7 +39,8 @@ export default function ProfileScreen(
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}>
+        contentContainerStyle={styles.content}
+      >
         {/* ─── Header ─────────────────────────────────────────────────── */}
         <View style={styles.header}>
           <Text style={styles.eyebrow}>Tài khoản</Text>
@@ -88,9 +89,7 @@ export default function ProfileScreen(
             <View style={styles.emptyBox}>
               <Text style={styles.emptyEmoji}>👤</Text>
               <Text style={styles.emptyTitle}>{PROFILE_COPY.emptyTitle}</Text>
-              <Text style={styles.emptyText}>
-                {PROFILE_COPY.emptyMessage}
-              </Text>
+              <Text style={styles.emptyText}>{PROFILE_COPY.emptyMessage}</Text>
             </View>
           )}
         </View>
@@ -126,7 +125,8 @@ export default function ProfileScreen(
           activeOpacity={0.85}
           disabled={isLoading}
           style={[styles.button, isLoading && styles.buttonDisabled]}
-          onPress={loadAccountDetail}>
+          onPress={loadAccountDetail}
+        >
           {isLoading ? (
             <ActivityIndicator color={PROFILE_THEME.text} />
           ) : (
@@ -142,34 +142,21 @@ export default function ProfileScreen(
         <View style={styles.menuSection}>
           <Text style={styles.menuSectionTitle}>Cài đặt</Text>
           <View style={styles.menuCard}>
-            <MenuItem
-              emoji="🌙"
-              label="Giao diện tối"
-              value="Bật"
-              showBorder
-            />
+            <MenuItem emoji="🌙" label="Giao diện tối" value="Bật" showBorder />
             <MenuItem
               emoji="🌐"
               label="Ngôn ngữ"
               value="Tiếng Việt"
               showBorder
             />
-            <MenuItem
-              emoji="🔔"
-              label="Thông báo"
-              value="Bật"
-              showBorder
-            />
+            <MenuItem emoji="🔔" label="Thông báo" value="Bật" showBorder />
             <MenuItem
               emoji="📱"
               label="Chất lượng video"
               value="Tự động"
               showBorder
             />
-            <MenuItem
-              emoji="ℹ️"
-              label="Về ứng dụng"
-            />
+            <MenuItem emoji="ℹ️" label="Về ứng dụng" />
           </View>
         </View>
 
@@ -196,7 +183,8 @@ function MenuItem({emoji, label, value, showBorder}: MenuItemProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      style={[styles.menuItem, showBorder && styles.menuItemBorder]}>
+      style={[styles.menuItem, showBorder && styles.menuItemBorder]}
+    >
       <Text style={styles.menuItemEmoji}>{emoji}</Text>
       <Text style={styles.menuItemText}>{label}</Text>
       {value && <Text style={styles.menuItemValueText}>{value}</Text>}
